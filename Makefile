@@ -1,10 +1,10 @@
-run:
-	go run ./cmd/main.go
+run.auth:
+	go run ./internal/services/auth/cmd
 
 gen.wire:
-	wire ./cmd/factory
+	wire ./internal/services/auth/cmd/factory
 
-gen.proto:
+gen.service_proto:
 	protoc \
 	--proto_path=./pkg/service/proto \
 	--go_opt=paths=source_relative \

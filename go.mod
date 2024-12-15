@@ -4,6 +4,7 @@ go 1.22.5
 
 require (
 	github.com/google/wire v0.6.0
+	golang.org/x/sync v0.10.0
 	google.golang.org/grpc v1.69.0
 	google.golang.org/protobuf v1.35.1
 )

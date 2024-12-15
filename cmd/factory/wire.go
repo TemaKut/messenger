@@ -4,7 +4,7 @@
 package factory
 
 import (
-	"my_project/internal/app"
+	"github.com/TemaKut/messenger/internal/app"
 
 	"github.com/google/wire"
 )

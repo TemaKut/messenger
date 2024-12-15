@@ -2,7 +2,8 @@ package main
 
 import (
 	"log"
-	"my_project/cmd/factory"
+
+	"github.com/TemaKut/messenger/cmd/factory"
 )
 
 func main() {

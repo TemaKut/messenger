@@ -7,7 +7,7 @@
 package factory
 
 import (
-	"my_project/internal/app"
+	"github.com/TemaKut/messenger/internal/app"
 )
 
 // Injectors from wire.go:

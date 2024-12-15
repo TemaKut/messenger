@@ -7,18 +7,29 @@
 package factory
 
 import (
+	"context"
 	"github.com/TemaKut/messenger/internal/services/auth/internal/app"
+	"github.com/TemaKut/messenger/internal/services/auth/internal/clients/db/postgres"
+	"github.com/TemaKut/messenger/internal/services/auth/internal/config"
+	"github.com/TemaKut/messenger/internal/services/auth/internal/repository/auth"
 	"github.com/TemaKut/messenger/internal/services/auth/internal/transport/rpc"
-	"github.com/TemaKut/messenger/internal/services/auth/internal/usecases/users"
+	auth3 "github.com/TemaKut/messenger/internal/services/auth/internal/transport/rpc/auth"
+	auth2 "github.com/TemaKut/messenger/internal/services/auth/internal/usecases/auth"
 )
 
 // Injectors from wire.go:
 
-func InitApp() (*app.App, func(), error) {
-	usersUseCase := users.NewUsersUseCase()
-	authService := rpc.NewAuthService(usersUseCase)
-	authServer := rpc.NewAuthServer(authService)
+func InitApp(ctx context.Context, cfg *config.Config) (*app.App, func(), error) {
+	pool, cleanup, err := postgres.NewAuthDB(ctx, cfg)
+	if err != nil {
+		return nil, nil, err
+	}
+	authRepository := auth.NewAuthRepository(pool)
+	authUseCase := auth2.NewAuthUseCase(authRepository)
+	authService := auth3.NewAuthService(authUseCase)
+	authServer := rpc.NewAuthServer(authService, cfg)
 	appApp := app.NewApp(authServer)
 	return appApp, func() {
+		cleanup()
 	}, nil
 }

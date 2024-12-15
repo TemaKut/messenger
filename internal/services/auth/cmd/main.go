@@ -7,13 +7,16 @@ import (
 	"os/signal"
 
 	"github.com/TemaKut/messenger/internal/services/auth/cmd/factory"
+	"github.com/TemaKut/messenger/internal/services/auth/internal/config"
 )
 
 func main() {
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, os.Kill)
 	defer stop()
 
-	app, cleanup, err := factory.InitApp()
+	cfg := config.DefaultConfig() // TODO: Заменить на Consul
+
+	app, cleanup, err := factory.InitApp(ctx, cfg)
 	if err != nil {
 		log.Fatalf("error init app -> %s", err)
 	}

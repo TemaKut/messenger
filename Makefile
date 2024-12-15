@@ -1,4 +1,4 @@
-run.auth:
+run:
 	go run ./internal/services/auth/cmd
 
 gen.wire:

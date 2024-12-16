@@ -25,9 +25,9 @@ func NewAuthServer(s *authsrv.AuthService, cfg *config.Config) *AuthServer {
 }
 
 func (s *AuthServer) Run() error {
-	l, err := net.Listen("tcp", s.cfg.Transport.Rpc.Addres)
+	l, err := net.Listen("tcp", s.cfg.GetState().Transport.Rpc.Addres)
 	if err != nil {
-		return fmt.Errorf("error listen addres (%s). %w", s.cfg.Transport.Rpc.Addres, err)
+		return fmt.Errorf("error listen addres (%s). %w", s.cfg.GetState().Transport.Rpc.Addres, err)
 	}
 
 	if err := s.srv.Serve(l); err != nil {

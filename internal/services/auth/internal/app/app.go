@@ -4,19 +4,22 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/TemaKut/messenger/internal/services/auth/internal/logger"
 	"github.com/TemaKut/messenger/internal/services/auth/internal/transport/rpc"
 	"golang.org/x/sync/errgroup"
 )
 
 type App struct {
 	authServer *rpc.AuthServer
+	log        logger.Logger
 }
 
-func NewApp(authServer *rpc.AuthServer) *App {
-	return &App{authServer: authServer}
+func NewApp(authServer *rpc.AuthServer, log logger.Logger) *App {
+	return &App{authServer: authServer, log: log}
 }
 
 func (a *App) Run(ctx context.Context) error {
+	a.log.Info("app running..")
 	eg, ctxErrGroup := errgroup.WithContext(ctx)
 
 	eg.Go(
@@ -30,7 +33,7 @@ func (a *App) Run(ctx context.Context) error {
 	)
 
 	<-ctxErrGroup.Done() // TODO мутная логика по останову приложения, нужно доработать
-	// TODO: log
+
 	if err := a.Stop(); err != nil {
 		return fmt.Errorf("error stop app. %w", err)
 	}
@@ -39,6 +42,8 @@ func (a *App) Run(ctx context.Context) error {
 }
 
 func (a *App) Stop() error {
+	a.log.Info("stopping app..")
+
 	a.authServer.Stop()
 
 	return nil

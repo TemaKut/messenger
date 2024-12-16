@@ -11,7 +11,7 @@ import (
 type AuthDB = *pgxpool.Pool
 
 func NewAuthDB(ctx context.Context, cfg *config.Config) (AuthDB, func(), error) {
-	pool, err := pgxpool.Connect(ctx, cfg.Databases.AuthDb.DSN)
+	pool, err := pgxpool.Connect(ctx, cfg.GetState().Databases.AuthDb.DSN)
 	if err != nil {
 		return nil, nil, fmt.Errorf("error connect to db. %w", err)
 	}

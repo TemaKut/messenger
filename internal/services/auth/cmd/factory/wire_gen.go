@@ -11,6 +11,7 @@ import (
 	"github.com/TemaKut/messenger/internal/services/auth/internal/app"
 	"github.com/TemaKut/messenger/internal/services/auth/internal/clients/db/postgres"
 	"github.com/TemaKut/messenger/internal/services/auth/internal/config"
+	"github.com/TemaKut/messenger/internal/services/auth/internal/logger"
 	"github.com/TemaKut/messenger/internal/services/auth/internal/repository/auth"
 	"github.com/TemaKut/messenger/internal/services/auth/internal/transport/rpc"
 	auth3 "github.com/TemaKut/messenger/internal/services/auth/internal/transport/rpc/auth"
@@ -28,7 +29,12 @@ func InitApp(ctx context.Context, cfg *config.Config) (*app.App, func(), error) 
 	authUseCase := auth2.NewAuthUseCase(authRepository)
 	authService := auth3.NewAuthService(authUseCase)
 	authServer := rpc.NewAuthServer(authService, cfg)
-	appApp := app.NewApp(authServer)
+	slogLogger, err := logger.NewLogger(cfg)
+	if err != nil {
+		cleanup()
+		return nil, nil, err
+	}
+	appApp := app.NewApp(authServer, slogLogger)
 	return appApp, func() {
 		cleanup()
 	}, nil

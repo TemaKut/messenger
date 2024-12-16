@@ -3,9 +3,11 @@ package config
 func DefaultConfig() *Config {
 	var c Config
 
-	c.Transport.Rpc.Addres = ":8001"
+	c.State.Environment = EnvironmentLocal
 
-	c.Databases.AuthDb.DSN = "postgres://root:root@localhost:5432/auth"
+	c.State.Transport.Rpc.Addres = ":8001"
+
+	c.State.Databases.AuthDb.DSN = "postgres://root:root@localhost:5432/auth?sslmode=disable"
 
 	return &c
 }

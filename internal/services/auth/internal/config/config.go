@@ -9,12 +9,12 @@ const (
 )
 
 type Config struct {
-	State ConfigState
+	state ConfigState
 }
 
 func (c *Config) GetState() ConfigState {
 	// TODO тут динамический контекст из consul
-	return c.State
+	return c.state
 }
 
 type ConfigState struct {
@@ -27,6 +27,10 @@ type ConfigState struct {
 	}
 	Databases struct {
 		AuthDb PostgresDB
+	}
+
+	Broker struct {
+		Addrs []string
 	}
 }
 

@@ -19,6 +19,7 @@ func InitApp(ctx context.Context, cfg *config.Config) (*app.App, func(), error) 
 			UseCasesSet,
 			RepositorySet,
 			ClientsSet,
+			BrokerSet,
 		),
 	)
 }

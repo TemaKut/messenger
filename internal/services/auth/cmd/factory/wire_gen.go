@@ -9,6 +9,7 @@ package factory
 import (
 	"context"
 	"github.com/TemaKut/messenger/internal/services/auth/internal/app"
+	"github.com/TemaKut/messenger/internal/services/auth/internal/clients/broker/kafka"
 	"github.com/TemaKut/messenger/internal/services/auth/internal/clients/db/postgres"
 	"github.com/TemaKut/messenger/internal/services/auth/internal/config"
 	"github.com/TemaKut/messenger/internal/services/auth/internal/logger"
@@ -26,16 +27,23 @@ func InitApp(ctx context.Context, cfg *config.Config) (*app.App, func(), error) 
 		return nil, nil, err
 	}
 	authRepository := auth.NewAuthRepository(pool)
-	authUseCase := auth2.NewAuthUseCase(authRepository)
+	syncProducer, cleanup2, err := kafka.NewProducer(cfg)
+	if err != nil {
+		cleanup()
+		return nil, nil, err
+	}
+	authUseCase := auth2.NewAuthUseCase(authRepository, syncProducer)
 	authService := auth3.NewAuthService(authUseCase)
 	authServer := rpc.NewAuthServer(authService, cfg)
 	slogLogger, err := logger.NewLogger(cfg)
 	if err != nil {
+		cleanup2()
 		cleanup()
 		return nil, nil, err
 	}
 	appApp := app.NewApp(authServer, slogLogger)
 	return appApp, func() {
+		cleanup2()
 		cleanup()
 	}, nil
 }

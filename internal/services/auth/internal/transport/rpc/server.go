@@ -6,7 +6,7 @@ import (
 
 	"github.com/TemaKut/messenger/internal/services/auth/internal/config"
 	authsrv "github.com/TemaKut/messenger/internal/services/auth/internal/transport/rpc/auth"
-	"github.com/TemaKut/messenger/pkg/service/models/auth"
+	"github.com/TemaKut/messenger/pkg/service/models/proto/auth"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )

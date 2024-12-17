@@ -1,12 +1,14 @@
 -- +goose Up
-CREATE TABLE films (
-    code        char(5),
-    title       varchar(40),
-    did         integer,
-    date_prod   date,
-    kind        varchar(10),
-    len         interval hour to minute,
-    CONSTRAINT code_title PRIMARY KEY(code,title)
+CREATE TABLE users (
+    id        UUID,
+    first_name VARCHAR(255),
+    last_name VARCHAR(255),
+    phone VARCHAR(30),
+    props JSONB,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP,
+
+    PRIMARY KEY (id)
 );
 -- +goose Down
-DROP TABLE IF EXISTS films;
+DROP TABLE IF EXISTS users;

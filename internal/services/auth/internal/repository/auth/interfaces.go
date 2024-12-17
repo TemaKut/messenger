@@ -3,9 +3,9 @@ package auth
 import (
 	"context"
 
-	authpb "github.com/TemaKut/messenger/pkg/service/models/auth"
+	authpb "github.com/TemaKut/messenger/pkg/service/models/proto/auth"
 )
 
 type AuthRepository interface {
-	CreateUser(ctx context.Context, user *authpb.User) error
+	AddUser(ctx context.Context, user *authpb.User) error
 }

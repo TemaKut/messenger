@@ -3,7 +3,7 @@ package auth
 import (
 	"context"
 
-	"github.com/TemaKut/messenger/pkg/service/models/auth"
+	"github.com/TemaKut/messenger/pkg/service/models/proto/auth"
 )
 
 type AuthUseCase interface {

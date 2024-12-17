@@ -6,7 +6,6 @@ import (
 
 	"github.com/TemaKut/messenger/internal/services/auth/internal/logger"
 	"github.com/TemaKut/messenger/internal/services/auth/internal/transport/rpc"
-	"golang.org/x/sync/errgroup"
 )
 
 type App struct {
@@ -20,19 +19,20 @@ func NewApp(authServer *rpc.AuthServer, log logger.Logger) *App {
 
 func (a *App) Run(ctx context.Context) error {
 	a.log.Info("app running..")
-	eg, ctxErrGroup := errgroup.WithContext(ctx)
 
-	eg.Go(
-		func() error {
-			if err := a.authServer.Run(); err != nil {
-				return fmt.Errorf("error run auth server. %w", err)
-			}
+	errCh := make(chan error, 1)
+	// TODO доработать работу с запуском
+	go func() {
+		if err := a.authServer.Run(); err != nil {
+			errCh <- fmt.Errorf("error run auth server. %w", err)
+		}
+	}()
 
-			return nil
-		},
-	)
-
-	<-ctxErrGroup.Done() // TODO мутная логика по останову приложения, нужно доработать
+	select {
+	case <-ctx.Done():
+	case e := <-errCh:
+		a.log.Error(e.Error())
+	}
 
 	if err := a.Stop(); err != nil {
 		return fmt.Errorf("error stop app. %w", err)

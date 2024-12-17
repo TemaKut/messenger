@@ -28,11 +28,6 @@ func main() {
 			}
 
 			defer cleanup()
-			defer func() {
-				if err := app.Stop(); err != nil {
-					log.Printf("error stop app -> %s", err)
-				}
-			}()
 
 			if err := app.Run(ctx); err != nil {
 				log.Fatalf("error run app -> %s", err)

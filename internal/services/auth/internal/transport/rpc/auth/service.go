@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	authuc "github.com/TemaKut/messenger/internal/services/auth/internal/usecases/auth"
-	"github.com/TemaKut/messenger/pkg/service/models/auth"
+	"github.com/TemaKut/messenger/pkg/service/models/proto/auth"
 )
 
 type AuthService struct {

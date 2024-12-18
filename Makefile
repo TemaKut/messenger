@@ -3,6 +3,7 @@ run:
 
 gen.wire:
 	wire ./internal/services/auth/cmd/factory
+	wire ./internal/services/apigateway/cmd/factory
 
 gen.proto:
 	protoc \

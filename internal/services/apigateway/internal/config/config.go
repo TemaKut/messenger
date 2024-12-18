@@ -21,16 +21,9 @@ type ConfigState struct {
 	Debug       bool
 	Environment Environment
 	Transport   struct {
-		Rpc struct {
-			Addres string
+		Broker struct {
+			Addrs []string
 		}
-	}
-	Databases struct {
-		AuthDb PostgresDB
-	}
-
-	Broker struct {
-		Addrs []string
 	}
 }
 

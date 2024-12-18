@@ -9,13 +9,26 @@ package factory
 import (
 	"context"
 	"github.com/TemaKut/messenger/internal/services/apigateway/internal/app"
+	kafka2 "github.com/TemaKut/messenger/internal/services/apigateway/internal/clients/broker/kafka"
 	"github.com/TemaKut/messenger/internal/services/apigateway/internal/config"
+	"github.com/TemaKut/messenger/internal/services/apigateway/internal/logger"
+	"github.com/TemaKut/messenger/internal/services/apigateway/internal/transport/broker/kafka"
 )
 
 // Injectors from wire.go:
 
 func InitApp(ctx context.Context, cfg *config.Config) (*app.App, func(), error) {
-	appApp := app.NewApp()
+	slogLogger, err := logger.NewLogger(cfg)
+	if err != nil {
+		return nil, nil, err
+	}
+	serviceHandler := kafka.NewServiceHandler(slogLogger)
+	topicBuilder := ProvideTopicBuilder()
+	serviceConsumer, err := kafka2.NewServiceConsumer(cfg, serviceHandler, topicBuilder)
+	if err != nil {
+		return nil, nil, err
+	}
+	appApp := app.NewApp(serviceConsumer, slogLogger)
 	return appApp, func() {
 	}, nil
 }

@@ -30,6 +30,8 @@ func main() {
 			if err := app.Run(ctx); err != nil {
 				log.Fatalf("error run app -> %s", err)
 			}
+
+			defer app.Stop()
 		},
 	}
 

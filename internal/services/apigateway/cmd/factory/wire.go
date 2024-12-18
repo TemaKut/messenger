@@ -15,6 +15,7 @@ func InitApp(ctx context.Context, cfg *config.Config) (*app.App, func(), error) 
 	panic(
 		wire.Build(
 			AppSet,
+			BrokerSet,
 		),
 	)
 }

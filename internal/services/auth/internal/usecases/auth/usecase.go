@@ -20,7 +20,6 @@ type AuthUseCaseImpl struct {
 }
 
 func NewAuthUseCase(authRepository authrepo.AuthRepository, kafkaProducer kafka.KafkaSyncProducer) AuthUseCase {
-
 	return &AuthUseCaseImpl{authRepository: authRepository, kafkaProducer: kafkaProducer}
 }
 

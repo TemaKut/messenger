@@ -44,7 +44,7 @@ func (h *ServiceHandler) ConsumeClaim(_ sarama.ConsumerGroupSession, claim saram
 func (h *ServiceHandler) handleEvent(event *events.Event) error {
 	switch {
 	case event.GetUserCreatedV1() != nil:
-		fmt.Println("Recived user created event)")
+		fmt.Printf("Recived user created event) uid -> %s\n", event.GetUserCreatedV1().GetUserId())
 	}
 
 	return nil

@@ -24,6 +24,9 @@ type ConfigState struct {
 		Broker struct {
 			Addrs []string
 		}
+		Websocket struct {
+			Addr string
+		}
 	}
 }
 

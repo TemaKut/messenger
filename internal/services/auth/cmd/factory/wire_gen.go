@@ -14,9 +14,9 @@ import (
 	"github.com/TemaKut/messenger/internal/services/auth/internal/config"
 	"github.com/TemaKut/messenger/internal/services/auth/internal/logger"
 	"github.com/TemaKut/messenger/internal/services/auth/internal/repository/auth"
-	"github.com/TemaKut/messenger/internal/services/auth/internal/transport/rpc"
-	auth3 "github.com/TemaKut/messenger/internal/services/auth/internal/transport/rpc/auth"
 	auth2 "github.com/TemaKut/messenger/internal/services/auth/internal/usecases/auth"
+	"github.com/TemaKut/messenger/internal/services/auth/pkg/transport/rpc"
+	auth3 "github.com/TemaKut/messenger/internal/services/auth/pkg/transport/rpc/auth"
 )
 
 // Injectors from wire.go:

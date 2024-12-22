@@ -2,7 +2,7 @@ package factory
 
 import (
 	kafkacli "github.com/TemaKut/messenger/internal/services/apigateway/internal/clients/broker/kafka"
-	kafkahandler "github.com/TemaKut/messenger/internal/services/apigateway/internal/transport/broker/kafka"
+	kafkahandler "github.com/TemaKut/messenger/internal/services/apigateway/pkg/transport/broker/kafka"
 	"github.com/TemaKut/messenger/pkg/service/events/kafka"
 	"github.com/google/wire"
 )

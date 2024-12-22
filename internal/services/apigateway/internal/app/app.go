@@ -6,15 +6,25 @@ import (
 
 	"github.com/TemaKut/messenger/internal/services/apigateway/internal/clients/broker/kafka"
 	"github.com/TemaKut/messenger/internal/services/apigateway/internal/logger"
+	"github.com/TemaKut/messenger/internal/services/apigateway/pkg/transport/websocket"
 )
 
 type App struct {
 	serviceConsumer *kafka.ServiceConsumer
+	websocketServer *websocket.WebsocketServer
 	log             logger.Logger
 }
 
-func NewApp(serviceConsumer *kafka.ServiceConsumer, log logger.Logger) *App {
-	return &App{serviceConsumer: serviceConsumer, log: log}
+func NewApp(
+	websocketServer *websocket.WebsocketServer,
+	serviceConsumer *kafka.ServiceConsumer,
+	log logger.Logger,
+) *App {
+	return &App{
+		serviceConsumer: serviceConsumer,
+		websocketServer: websocketServer,
+		log:             log,
+	}
 }
 
 func (a *App) Run(ctx context.Context) error {
@@ -29,19 +39,25 @@ func (a *App) Run(ctx context.Context) error {
 		}
 	}()
 
+	go func() {
+		if err := a.websocketServer.Start(ctx); err != nil {
+			errCh <- fmt.Errorf("error start websocket service. %w", err)
+		}
+	}()
+
 	select {
 	case <-ctx.Done():
 	case e := <-errCh:
 		a.log.Error(e.Error())
 	}
 
+	a.stop()
+
 	return nil
 }
 
-func (a *App) Stop() error {
+func (a *App) stop() {
 	if err := a.serviceConsumer.Close(); err != nil {
-		return fmt.Errorf("error close service consumer. %w", err)
+		a.log.Error(fmt.Errorf("error close service consumer. %w", err).Error())
 	}
-
-	return nil
 }

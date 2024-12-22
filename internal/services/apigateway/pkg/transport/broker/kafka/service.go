@@ -25,12 +25,14 @@ func (h *ServiceHandler) Cleanup(_ sarama.ConsumerGroupSession) error {
 	return nil
 }
 
-func (h *ServiceHandler) ConsumeClaim(_ sarama.ConsumerGroupSession, claim sarama.ConsumerGroupClaim) error {
+func (h *ServiceHandler) ConsumeClaim(s sarama.ConsumerGroupSession, claim sarama.ConsumerGroupClaim) error {
 	for msg := range claim.Messages() {
+		s.MarkMessage(msg, "")
 		var event events.Event
 
 		if err := proto.Unmarshal(msg.Value, &event); err != nil {
 			h.log.Error(fmt.Sprintf("error unmarshal service event. %s", err))
+			continue
 		}
 
 		if err := h.handleEvent(&event); err != nil {

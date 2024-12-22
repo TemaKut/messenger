@@ -1,8 +1,8 @@
 package factory
 
 import (
-	"github.com/TemaKut/messenger/internal/services/auth/internal/transport/rpc"
-	"github.com/TemaKut/messenger/internal/services/auth/internal/transport/rpc/auth"
+	"github.com/TemaKut/messenger/internal/services/auth/pkg/transport/rpc"
+	"github.com/TemaKut/messenger/internal/services/auth/pkg/transport/rpc/auth"
 	"github.com/google/wire"
 )
 

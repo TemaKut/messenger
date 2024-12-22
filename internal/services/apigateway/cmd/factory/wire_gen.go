@@ -12,7 +12,8 @@ import (
 	kafka2 "github.com/TemaKut/messenger/internal/services/apigateway/internal/clients/broker/kafka"
 	"github.com/TemaKut/messenger/internal/services/apigateway/internal/config"
 	"github.com/TemaKut/messenger/internal/services/apigateway/internal/logger"
-	"github.com/TemaKut/messenger/internal/services/apigateway/internal/transport/broker/kafka"
+	"github.com/TemaKut/messenger/internal/services/apigateway/pkg/transport/broker/kafka"
+	"github.com/TemaKut/messenger/internal/services/apigateway/pkg/transport/websocket"
 )
 
 // Injectors from wire.go:
@@ -22,13 +23,14 @@ func InitApp(ctx context.Context, cfg *config.Config) (*app.App, func(), error) 
 	if err != nil {
 		return nil, nil, err
 	}
+	websocketServer := websocket.NewWebsocketServer(cfg, slogLogger)
 	serviceHandler := kafka.NewServiceHandler(slogLogger)
 	topicBuilder := ProvideTopicBuilder()
 	serviceConsumer, err := kafka2.NewServiceConsumer(cfg, serviceHandler, topicBuilder)
 	if err != nil {
 		return nil, nil, err
 	}
-	appApp := app.NewApp(serviceConsumer, slogLogger)
+	appApp := app.NewApp(websocketServer, serviceConsumer, slogLogger)
 	return appApp, func() {
 	}, nil
 }

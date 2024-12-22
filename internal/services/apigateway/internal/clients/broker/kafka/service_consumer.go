@@ -6,7 +6,7 @@ import (
 
 	"github.com/IBM/sarama"
 	"github.com/TemaKut/messenger/internal/services/apigateway/internal/config"
-	kafkahandler "github.com/TemaKut/messenger/internal/services/apigateway/internal/transport/broker/kafka"
+	kafkahandler "github.com/TemaKut/messenger/internal/services/apigateway/pkg/transport/broker/kafka"
 	"github.com/TemaKut/messenger/pkg/service/events/kafka"
 )
 
@@ -21,11 +21,10 @@ func NewServiceConsumer(
 	handler *kafkahandler.ServiceHandler,
 	topicBuilder *kafka.TopicBuilder,
 ) (*ServiceConsumer, error) {
-	cg, err := sarama.NewConsumerGroup(
-		cfg.GetState().Transport.Broker.Addrs,
-		"api-gateway-1",
-		nil,
-	)
+	c := sarama.NewConfig()
+	c.Consumer.Offsets.Initial = sarama.OffsetOldest
+
+	cg, err := sarama.NewConsumerGroup(cfg.GetState().Transport.Broker.Addrs, "api-gateway-1", c)
 	if err != nil {
 		return nil, fmt.Errorf("error connect to consumer group. %w", err)
 	}

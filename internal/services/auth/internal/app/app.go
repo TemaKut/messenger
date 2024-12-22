@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	"github.com/TemaKut/messenger/internal/services/auth/internal/logger"
-	"github.com/TemaKut/messenger/internal/services/auth/internal/transport/rpc"
+	"github.com/TemaKut/messenger/internal/services/auth/pkg/transport/rpc"
 )
 
 type App struct {

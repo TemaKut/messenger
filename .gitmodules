@@ -1,3 +1,0 @@
-[submodule "pkg/service/proto"]
-	path = pkg/service/proto
-	url = https://github.com/TemaKut/messenger_service_proto

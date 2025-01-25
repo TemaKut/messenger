@@ -1,11 +1,7 @@
-run.auth:
-	go run ./internal/services/auth/cmd
-
-run.apigateway:
+run.apigateway: 
 	go run ./internal/services/apigateway/cmd
 
 gen.wire:
-	wire ./internal/services/auth/cmd/factory
 	wire ./internal/services/apigateway/cmd/factory
 
 gen.proto:

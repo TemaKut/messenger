@@ -1,11 +1,32 @@
 package logger
 
-// import "log/slog"
+import (
+	"fmt"
+	"log/slog"
+	"os"
 
-// type Logger struct {
-// }
+	"github.com/TemaKut/messenger/internal/services/apigateway/internal/app/config"
+)
 
-// func NewLogger() *Logger {
-// 	slog.New(slog.NewJSONHandler())
-// 	return &Logger{}
-// }
+type Logger struct {
+	*slog.Logger
+}
+
+func NewLogger(cfg *config.Config) (*Logger, error) {
+	var h slog.Handler
+
+	switch cfg.Environment {
+	case config.EnvironmentLocal:
+		h = slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
+			AddSource: true,
+		})
+	case config.EnvironmentStage:
+		h = slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
+			AddSource: true,
+		})
+	default:
+		return nil, fmt.Errorf("error unknown environment < %s >", cfg.Environment)
+	}
+
+	return &Logger{Logger: slog.New(h)}, nil
+}

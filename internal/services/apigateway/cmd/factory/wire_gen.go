@@ -6,21 +6,28 @@
 
 package factory
 
+import (
+	"github.com/TemaKut/messenger/internal/services/apigateway/internal/app/config"
+	"github.com/TemaKut/messenger/internal/services/apigateway/internal/app/logger"
+	"github.com/TemaKut/messenger/internal/services/apigateway/internal/transport/websocket/handler/public"
+)
+
 // Injectors from wire.go:
 
-func InitService() (*Service, func(), error) {
-	service, cleanup := ProvideService()
-	return service, func() {
+func InitService() (*App, func(), error) {
+	configConfig := config.NewConfig()
+	loggerLogger, err := logger.NewLogger(configConfig)
+	if err != nil {
+		return nil, nil, err
+	}
+	handler := public.NewHandler(loggerLogger)
+	httpServerProvider, cleanup, err := ProvideHttpServer(configConfig, loggerLogger, handler)
+	if err != nil {
+		return nil, nil, err
+	}
+	app, cleanup2 := ProvideApp(loggerLogger, httpServerProvider)
+	return app, func() {
+		cleanup2()
 		cleanup()
 	}, nil
-}
-
-// wire.go:
-
-type Service struct{}
-
-func ProvideService() (*Service, func()) {
-	return &Service{}, func() {
-
-	}
 }

@@ -4,16 +4,9 @@ package factory
 
 import "github.com/google/wire"
 
-func InitService() (*Service, func(), error) {
+func InitService() (*App, func(), error) {
 	panic(wire.Build(
-		ProvideService,
+		AppSet,
+		HttpSet,
 	))
-}
-
-type Service struct{}
-
-func ProvideService() (*Service, func()) {
-	return &Service{}, func() {
-
-	}
 }

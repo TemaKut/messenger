@@ -38,6 +38,13 @@ func ProvideHttpServer(
 	})
 
 	e.Use(middleware.Recover())
+	e.Use(middleware.Logger())
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"*"},
+		AllowHeaders:     []string{"*"},
+		AllowCredentials: true,
+	}))
 
 	runServerErrCh := make(chan error, 1)
 

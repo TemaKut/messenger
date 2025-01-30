@@ -2,6 +2,7 @@ package public
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/TemaKut/messenger/internal/services/apigateway/internal/app/logger"
 	"golang.org/x/net/websocket"
@@ -18,6 +19,21 @@ func NewHandler(logger *logger.Logger) *Handler {
 func (h *Handler) Handle(ws *websocket.Conn) {
 	defer h.closeWebsocketConnection(ws)
 
+	var handleErr error
+
+	for {
+		// TODO chans for receive and send
+		if err := websocket.Message.Send(ws, "Hello))"); err != nil {
+			handleErr = fmt.Errorf("error send message. %w", err)
+
+			break
+		}
+		time.Sleep(time.Second)
+	}
+
+	if handleErr != nil {
+		h.logger.Error(fmt.Sprintf("error handle connection. %s", handleErr))
+	}
 }
 
 func (h *Handler) closeWebsocketConnection(ws *websocket.Conn) {

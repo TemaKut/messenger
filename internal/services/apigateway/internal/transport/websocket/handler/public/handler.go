@@ -24,6 +24,7 @@ func (h *Handler) Handle(ws *websocket.Conn) {
 	for {
 		// TODO chans for receive and send
 		// Test 3
+		// TEST 4
 		if err := websocket.Message.Send(ws, "Hello))"); err != nil {
 			handleErr = fmt.Errorf("error send message. %w", err)
 

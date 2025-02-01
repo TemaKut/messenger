@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/TemaKut/messenger/internal/services/apigateway/internal/app/config"
-	"github.com/TemaKut/messenger/internal/services/apigateway/internal/app/logger"
-	"github.com/TemaKut/messenger/internal/services/apigateway/internal/transport/websocket/handler/public"
+	transprotws "github.com/TemaKut/messenger/internal/services/apigateway/internal/transport/websocket"
+	"github.com/TemaKut/messenger/pkg/logger"
 	"github.com/google/wire"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -16,7 +16,7 @@ import (
 
 var HttpSet = wire.NewSet(
 	ProvideHttpServer,
-	public.NewHandler,
+	transprotws.NewHandler,
 )
 
 type HttpServerProvider struct{}
@@ -24,18 +24,11 @@ type HttpServerProvider struct{}
 func ProvideHttpServer(
 	cfg *config.Config,
 	logger *logger.Logger,
-	webSocketHandler *public.Handler,
+	webSocketHandler *transprotws.Handler,
 ) (HttpServerProvider, func(), error) {
 	logger.Info("http server running..")
 
 	e := echo.New()
-
-	e.Any("/ws", func(c echo.Context) error {
-		wsh := websocket.Handler(webSocketHandler.Handle)
-		wsh.ServeHTTP(c.Response(), c.Request())
-
-		return nil
-	})
 
 	e.Use(middleware.Recover())
 	e.Use(middleware.Logger())
@@ -45,6 +38,13 @@ func ProvideHttpServer(
 		AllowHeaders:     []string{"*"},
 		AllowCredentials: true,
 	}))
+
+	e.Any("/ws", func(c echo.Context) error {
+		wsh := websocket.Handler(webSocketHandler.Handle)
+		wsh.ServeHTTP(c.Response(), c.Request())
+
+		return nil
+	})
 
 	runServerErrCh := make(chan error, 1)
 

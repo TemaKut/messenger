@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/TemaKut/messenger/internal/services/apigateway/internal/app/config"
-	transprotws "github.com/TemaKut/messenger/internal/services/apigateway/internal/transport/websocket"
+	session "github.com/TemaKut/messenger/internal/services/apigateway/internal/service/session"
 	"github.com/TemaKut/messenger/pkg/logger"
 	"github.com/google/wire"
 	"github.com/labstack/echo/v4"
@@ -16,7 +16,7 @@ import (
 
 var HttpSet = wire.NewSet(
 	ProvideHttpServer,
-	transprotws.NewHandler,
+	session.NewSesionService,
 )
 
 type HttpServerProvider struct{}
@@ -24,7 +24,7 @@ type HttpServerProvider struct{}
 func ProvideHttpServer(
 	cfg *config.Config,
 	logger *logger.Logger,
-	webSocketHandler *transprotws.Handler,
+	sessionService *session.SessionService,
 ) (HttpServerProvider, func(), error) {
 	logger.Info("http server running..")
 
@@ -40,7 +40,7 @@ func ProvideHttpServer(
 	}))
 
 	e.Any("/ws", func(c echo.Context) error {
-		wsh := websocket.Handler(webSocketHandler.Handle)
+		wsh := websocket.Handler(sessionService.HandleConnection)
 		wsh.ServeHTTP(c.Response(), c.Request())
 
 		return nil

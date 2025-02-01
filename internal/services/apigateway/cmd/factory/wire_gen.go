@@ -8,7 +8,7 @@ package factory
 
 import (
 	"github.com/TemaKut/messenger/internal/services/apigateway/internal/app/config"
-	"github.com/TemaKut/messenger/internal/services/apigateway/internal/transport/websocket"
+	"github.com/TemaKut/messenger/internal/services/apigateway/internal/service/session"
 )
 
 // Injectors from wire.go:
@@ -23,8 +23,8 @@ func InitService() (*App, func(), error) {
 	if err != nil {
 		return nil, nil, err
 	}
-	handler := websocket.NewHandler(logger, authServiceClient)
-	httpServerProvider, cleanup2, err := ProvideHttpServer(configConfig, logger, handler)
+	sessionService := session.NewSesionService(logger, authServiceClient)
+	httpServerProvider, cleanup2, err := ProvideHttpServer(configConfig, logger, sessionService)
 	if err != nil {
 		cleanup()
 		return nil, nil, err

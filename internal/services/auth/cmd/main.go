@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/signal"
 
+	"github.com/TemaKut/messenger/internal/services/auth/cmd/factory"
 	"github.com/urfave/cli"
 )
 
@@ -16,7 +17,12 @@ func main() {
 			ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, os.Kill)
 			defer cancel()
 
-			// TODO factory
+			_, cleanup, err := factory.InitService()
+			if err != nil {
+				log.Fatalf("[FATAL] init service. %s", err)
+			}
+
+			defer cleanup()
 
 			<-ctx.Done()
 			log.Print("received stop signal")

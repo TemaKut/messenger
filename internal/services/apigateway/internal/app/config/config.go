@@ -10,6 +10,12 @@ type Config struct {
 			Addr string
 		}
 	}
+
+	Clients struct {
+		AuthService struct {
+			Addr string
+		}
+	}
 }
 
 type Environment string

@@ -19,13 +19,19 @@ func InitService() (*App, func(), error) {
 	if err != nil {
 		return nil, nil, err
 	}
-	handler := websocket.NewHandler(logger)
-	httpServerProvider, cleanup, err := ProvideHttpServer(configConfig, logger, handler)
+	authServiceClient, cleanup, err := ProvideAuthServiceGRPCClient(logger, configConfig)
 	if err != nil {
 		return nil, nil, err
 	}
-	app, cleanup2 := ProvideApp(logger, httpServerProvider)
+	handler := websocket.NewHandler(logger, authServiceClient)
+	httpServerProvider, cleanup2, err := ProvideHttpServer(configConfig, logger, handler)
+	if err != nil {
+		cleanup()
+		return nil, nil, err
+	}
+	app, cleanup3 := ProvideApp(logger, httpServerProvider)
 	return app, func() {
+		cleanup3()
 		cleanup2()
 		cleanup()
 	}, nil

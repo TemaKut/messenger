@@ -19,13 +19,12 @@ func InitService() (*App, func(), error) {
 	if err != nil {
 		return nil, nil, err
 	}
-	server, cleanup, err := ProvideGRPCServer(logger, configConfig)
+	service := auth.NewService()
+	server, cleanup, err := ProvideGRPCServer(logger, configConfig, service)
 	if err != nil {
 		return nil, nil, err
 	}
-	service := auth.NewService()
-	authService := ProvideAuthService(server, service)
-	grpcProvider := ProvideGRPC(authService)
+	grpcProvider := ProvideGRPC(server)
 	app, cleanup2 := ProvideApp(logger, grpcProvider)
 	return app, func() {
 		cleanup2()

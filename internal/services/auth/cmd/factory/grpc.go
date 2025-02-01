@@ -17,25 +17,20 @@ import (
 var GRPCSet = wire.NewSet(
 	ProvideGRPC,
 	ProvideGRPCServer,
-	ProvideAuthService,
 	auth.NewService,
 )
 
 type GRPCProvider struct{}
 
-func ProvideGRPC(_ AuthService) GRPCProvider {
+func ProvideGRPC(_ *grpc.Server) GRPCProvider {
 	return GRPCProvider{}
 }
 
-type AuthService struct{}
-
-func ProvideAuthService(srv *grpc.Server, authService *auth.Service) AuthService {
-	authv1.RegisterAuthServiceServer(srv, authService)
-
-	return AuthService{}
-}
-
-func ProvideGRPCServer(l *logger.Logger, cfg *config.Config) (*grpc.Server, func(), error) {
+func ProvideGRPCServer(
+	l *logger.Logger,
+	cfg *config.Config,
+	authService *auth.Service,
+) (*grpc.Server, func(), error) {
 	l.Info(fmt.Sprintf("starting grpc server on %s", cfg.Server.GRPC.Addr))
 
 	lis, err := net.Listen("tcp", cfg.Server.GRPC.Addr)
@@ -44,6 +39,8 @@ func ProvideGRPCServer(l *logger.Logger, cfg *config.Config) (*grpc.Server, func
 	}
 
 	srv := grpc.NewServer()
+
+	authv1.RegisterAuthServiceServer(srv, authService)
 
 	errCh := make(chan error, 1)
 

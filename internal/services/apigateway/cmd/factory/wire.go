@@ -8,5 +8,6 @@ func InitService() (*App, func(), error) {
 	panic(wire.Build(
 		AppSet,
 		HttpSet,
+		GRPCSet,
 	))
 }

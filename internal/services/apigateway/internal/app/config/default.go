@@ -7,4 +7,6 @@ func init() {
 	DefaultConfig.Environment = EnvironmentLocal
 
 	DefaultConfig.Server.Websocket.Addr = ":8001"
+
+	DefaultConfig.Clients.AuthService.Addr = ":8002"
 }

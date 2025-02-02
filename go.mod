@@ -3,6 +3,7 @@ module github.com/TemaKut/messenger
 go 1.22.5
 
 require (
+	github.com/google/uuid v1.6.0
 	github.com/google/wire v0.6.0
 	github.com/labstack/echo/v4 v4.13.3
 	github.com/urfave/cli v1.22.16

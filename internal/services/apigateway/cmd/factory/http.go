@@ -17,6 +17,7 @@ import (
 var HttpSet = wire.NewSet(
 	ProvideHttpServer,
 	ws.NewHandler,
+	ws.NewSessionManager,
 )
 
 type HttpServerProvider struct{}

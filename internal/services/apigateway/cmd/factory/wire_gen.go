@@ -8,7 +8,6 @@ package factory
 
 import (
 	"github.com/TemaKut/messenger/internal/services/apigateway/internal/app/config"
-	"github.com/TemaKut/messenger/internal/services/apigateway/internal/session"
 	"github.com/TemaKut/messenger/internal/services/apigateway/internal/transport/websocket"
 )
 
@@ -20,7 +19,7 @@ func InitService() (*App, func(), error) {
 	if err != nil {
 		return nil, nil, err
 	}
-	sessionManager := session.NewSessionManager()
+	sessionManager := websocket.NewSessionManager()
 	handler := websocket.NewHandler(logger, sessionManager)
 	httpServerProvider, cleanup, err := ProvideHttpServer(configConfig, logger, handler)
 	if err != nil {

@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/TemaKut/messenger/internal/services/apigateway/internal/app/config"
-	"github.com/TemaKut/messenger/internal/services/apigateway/internal/session"
 	"github.com/TemaKut/messenger/pkg/logger"
 	"github.com/google/wire"
 )
@@ -13,7 +12,6 @@ var AppSet = wire.NewSet(
 	ProvideApp,
 	config.NewConfig,
 	ProvideLogger,
-	session.NewSessionManager,
 )
 
 type App struct{}

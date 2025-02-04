@@ -1,8 +1,11 @@
 package tests_test
 
 import (
+	"context"
+	"fmt"
 	"testing"
 
+	requestv1 "github.com/TemaKut/messenger/pkg/proto/client/gen/request"
 	"github.com/TemaKut/messenger/tests/utils/wsclient"
 )
 
@@ -13,4 +16,6 @@ func TestSome(t *testing.T) {
 	}
 
 	defer client.Close()
+
+	fmt.Println(client.Request(context.Background(), &requestv1.Request{}))
 }

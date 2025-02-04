@@ -5,9 +5,12 @@ import (
 	"fmt"
 	"sync"
 
+	requestv1 "github.com/TemaKut/messenger/pkg/proto/client/gen/request"
+	responsev1 "github.com/TemaKut/messenger/pkg/proto/client/gen/response"
 	authv1 "github.com/TemaKut/messenger/pkg/proto/service/gen/auth"
 	"github.com/google/uuid"
 	ws "golang.org/x/net/websocket"
+	"google.golang.org/protobuf/proto"
 )
 
 type ConnectedSession struct {
@@ -67,7 +70,22 @@ func (s *SessionManager) HandleSessionRequests(ctx context.Context, id string) e
 			return fmt.Errorf("error receive message from session id %s", id)
 		}
 
-		if err := ws.Message.Send(cs.conn, string(data)+"resp"); err != nil {
+		var req requestv1.Request
+
+		if err := proto.Unmarshal(data, &req); err != nil {
+			return fmt.Errorf("error unmarshal request. %w", err)
+		}
+
+		resp := &responsev1.Response{
+			Id: "req.GetId()",
+		}
+
+		b, err := proto.Marshal(resp)
+		if err != nil {
+			return fmt.Errorf("error marshal response. %w", err)
+		}
+
+		if err := ws.Message.Send(cs.conn, b); err != nil {
 			return fmt.Errorf("error send message to session id %s", id)
 		}
 	}

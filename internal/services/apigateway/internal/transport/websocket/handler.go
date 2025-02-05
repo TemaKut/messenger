@@ -3,6 +3,7 @@ package websocket
 import (
 	"fmt"
 
+	wsm "github.com/TemaKut/messenger/internal/services/apigateway/internal/sessions/websocket"
 	"github.com/TemaKut/messenger/pkg/logger"
 	ws "golang.org/x/net/websocket"
 	"golang.org/x/sync/errgroup"
@@ -10,10 +11,10 @@ import (
 
 type Handler struct {
 	logger         *logger.Logger
-	sessionManager *SessionManager
+	sessionManager *wsm.SessionManager
 }
 
-func NewHandler(logger *logger.Logger, sessionManager *SessionManager) *Handler {
+func NewHandler(logger *logger.Logger, sessionManager *wsm.SessionManager) *Handler {
 	return &Handler{
 		logger:         logger,
 		sessionManager: sessionManager,

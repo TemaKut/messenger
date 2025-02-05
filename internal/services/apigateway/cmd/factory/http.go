@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/TemaKut/messenger/internal/services/apigateway/internal/app/config"
+	wsm "github.com/TemaKut/messenger/internal/services/apigateway/internal/sessions/websocket"
 	ws "github.com/TemaKut/messenger/internal/services/apigateway/internal/transport/websocket"
 	"github.com/TemaKut/messenger/pkg/logger"
 	"github.com/google/wire"
@@ -17,7 +18,7 @@ import (
 var HttpSet = wire.NewSet(
 	ProvideHttpServer,
 	ws.NewHandler,
-	ws.NewSessionManager,
+	wsm.NewSessionManager,
 )
 
 type HttpServerProvider struct{}

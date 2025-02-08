@@ -8,7 +8,7 @@ package factory
 
 import (
 	"github.com/TemaKut/messenger/internal/services/auth/internal/app/config"
-	"github.com/TemaKut/messenger/internal/services/auth/transport/grpc/auth"
+	"github.com/TemaKut/messenger/internal/services/auth/internal/transport/grpc/auth"
 )
 
 // Injectors from wire.go:

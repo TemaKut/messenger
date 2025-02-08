@@ -2,7 +2,6 @@ package auth
 
 import (
 	"context"
-	"fmt"
 
 	authv1 "github.com/TemaKut/messenger/pkg/proto/service/gen/auth"
 )
@@ -16,6 +15,10 @@ func NewService() *Service {
 }
 
 func (s *Service) InitSession(ctx context.Context, req *authv1.InitSessionRequest) (*authv1.InitSessionResponse, error) {
-	fmt.Println(1)
+	// TODO implement the method
 	return &authv1.InitSessionResponse{}, nil
+}
+
+func (s *Service) RegisterUser(ctx context.Context, req *authv1.RegisterUserRequest) (*authv1.RegisterUserResponse, error) {
+	return &authv1.RegisterUserResponse{}, nil
 }

@@ -7,11 +7,12 @@ import (
 	"time"
 
 	"github.com/TemaKut/messenger/internal/services/auth/internal/app/config"
-	"github.com/TemaKut/messenger/internal/services/auth/transport/grpc/auth"
+	"github.com/TemaKut/messenger/internal/services/auth/internal/transport/grpc/auth"
 	"github.com/TemaKut/messenger/pkg/logger"
 	authv1 "github.com/TemaKut/messenger/pkg/proto/service/gen/auth"
 	"github.com/google/wire"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 var GRPCSet = wire.NewSet(
@@ -41,6 +42,7 @@ func ProvideGRPCServer(
 	srv := grpc.NewServer()
 
 	authv1.RegisterAuthServiceServer(srv, authService)
+	reflection.Register(srv)
 
 	errCh := make(chan error, 1)
 

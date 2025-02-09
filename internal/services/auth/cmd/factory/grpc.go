@@ -48,7 +48,7 @@ func ProvideGRPCServer(
 
 	go func() {
 		if err := srv.Serve(lis); err != nil {
-			errCh <- fmt.Errorf("failed to serve %s %s", cfg.Server.GRPC.Addr, err)
+			errCh <- fmt.Errorf("failed to serve %s %w", cfg.Server.GRPC.Addr, err)
 		}
 	}()
 
@@ -58,7 +58,6 @@ func ProvideGRPCServer(
 	case err := <-errCh:
 		return nil, nil, err
 	case <-after:
-
 	}
 
 	return srv, func() {

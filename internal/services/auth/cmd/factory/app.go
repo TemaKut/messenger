@@ -21,6 +21,7 @@ func ProvideApp(
 	_ GRPCProvider,
 ) (*App, func()) {
 	l.Info("app initialized")
+
 	return &App{}, func() {
 		l.Info("app start cleanup..")
 	}

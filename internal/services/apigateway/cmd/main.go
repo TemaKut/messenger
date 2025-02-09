@@ -13,7 +13,7 @@ import (
 func main() {
 	app := &cli.App{
 		Name: "Apigateway",
-		Action: func(cliCtx *cli.Context) error {
+		Action: func(_ *cli.Context) error {
 			ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, os.Kill)
 			defer cancel()
 

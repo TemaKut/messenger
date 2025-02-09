@@ -6,8 +6,7 @@ import (
 	"github.com/TemaKut/messenger/internal/services/auth/internal/dto"
 )
 
-type Service struct {
-}
+type Service struct{}
 
 func NewService() *Service {
 	return &Service{}

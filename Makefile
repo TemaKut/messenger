@@ -1,3 +1,6 @@
+install.bin:
+	curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh | sh -s -- -b ./bin v1.63.4
+
 run.apigateway: 
 	go run ./internal/services/apigateway/cmd
 
@@ -29,3 +32,6 @@ gen.client_proto:
 gen.proto:
 	@make gen.svc_proto
 	@make gen.client_proto
+
+lint:
+	./bin/golangci-lint run ./...

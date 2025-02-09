@@ -37,6 +37,6 @@ func (h *Handler) HandleConnection(conn *ws.Conn) {
 	})
 
 	if err := eg.Wait(); err != nil {
-		h.logger.Error(fmt.Sprintf("error wait wait group. %s", err))
+		h.logger.Error(fmt.Sprintf("error wait group. %s", err))
 	}
 }

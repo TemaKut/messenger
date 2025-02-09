@@ -18,6 +18,7 @@ type App struct{}
 
 func ProvideApp(l *logger.Logger, _ HttpServerProvider) (*App, func()) {
 	l.Info("app initialized")
+
 	return &App{}, func() {
 		l.Info("app start cleanup..")
 	}

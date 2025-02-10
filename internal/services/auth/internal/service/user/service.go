@@ -12,6 +12,9 @@ func NewService() *Service {
 	return &Service{}
 }
 
-func CreateUser(ctx context.Context, u *dto.User) (*dto.User, error) {
-	return u, nil // FIXME
+type CreateUserParams struct {
+}
+
+func CreateUser(ctx context.Context, u *dto.UnregisteredUser) (*dto.User, error) {
+	return nil, nil // FIXME
 }
